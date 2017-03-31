@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 配置SpringMVC -->
+    <!-- 1.开启SpringMVC注解模式 -->
+    <!-- 简化配置：
+        (1)自动注册DefaultAnootationHandlerMapping,AnotationMethodHandlerAdapter
+        (2)提供一些列：数据绑定，数字和日期的format @NumberFormat, @DateTimeFormat, xml,json默认读写支持
+    -->
+    <mvc:annotation-driven/>
+    <!-- 2.静态资源默认servlet配置
+        (1)加入对静态资源的处理：js,gif,png
+        (2)允许使用"/"做整体映射
+     -->
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/img/**" location="/img/"/>
+    <mvc:resources mapping="/user/**" location="/user/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <!--<mvc:resources mapping="/jsp/**" location="/jsp/"/>-->
+    <!--<mvc:resources mapping="/include/**" location="/include/"/>-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 3.配置jsp 显示ViewResolver -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 4.扫描web相关的bean配置 -->
+    <context:component-scan base-package="com.jlxy.bllld.controller">
+        <!-- 制定扫包规则 ,只扫描使用@Controller注解的JAVA类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <!--用户是否登录检查-->
+    <!--<mvc:interceptors>-->
+        <!--&lt;!&ndash;<mvc:interceptor>&ndash;&gt;-->
+            <!--&lt;!&ndash;<mvc:mapping path="/download/**"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<mvc:mapping path="/upload/**" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<bean class="com.jlxy.bllld.interceptor.MainInterceptor" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</mvc:interceptor>&ndash;&gt;-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**"/>-->
+
+            <!--<mvc:exclude-mapping path="/login.jsp" />-->
+            <!--<mvc:exclude-mapping path="/register.jsp" />-->
+            <!--&lt;!&ndash;静态资源不使用检查&ndash;&gt;-->
+            <!--<mvc:exclude-mapping path="/commons/**" />-->
+            <!--<mvc:exclude-mapping path="/css/**" />-->
+            <!--<mvc:exclude-mapping path="/img/**" />-->
+            <!--<mvc:exclude-mapping path="/js/**" />-->
+            <!--&lt;!&ndash;文件上传下载不使用检查&ndash;&gt;-->
+            <!--<mvc:exclude-mapping path="/download/**"/>-->
+            <!--<mvc:exclude-mapping path="/upload/**" />-->
+            <!--&lt;!&ndash;需要的检查&ndash;&gt;-->
+            <!--<bean id="MainInterceptor" class="com.jlxy.bllld.interceptor.MainInterceptor" />-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+</beans>
